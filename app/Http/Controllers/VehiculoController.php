@@ -78,6 +78,12 @@ class VehiculoController extends Controller
     public function show($id)
     {
         //
+        $vehiculo = Vehiculos::find($id);
+        if(is_null($vehiculo))
+        return response()->json(["Mensaje"=>"No se encontro ningun registro.","estado"=>false],404);
+        else
+        return response()->json($vehiculo,200);
+
     }
 
     /**
@@ -89,6 +95,7 @@ class VehiculoController extends Controller
     public function edit($id)
     {
         //
+
     }
 
     /**

@@ -40,3 +40,10 @@ Route::get('vehiculos/{id}','App\Http\Controllers\VehiculoController@show');
 Route::post('vehiculos/add','App\Http\Controllers\VehiculoController@store');
 Route::put('vehiculos/edit/{id}','App\Http\Controllers\VehiculoController@update');
 Route::delete('vehiculos/delete/{id}','App\Http\Controllers\VehiculoController@destroy');
+
+//Servicios
+Route::get('servicios','App\Http\Controllers\ServiciosController@index');
+Route::get('servicios/{id}','App\Http\Controllers\ServiciosController@show');
+Route::post('servicios/add','App\Http\Controllers\ServiciosController@store');
+Route::put('servicios/edit/{id}','App\Http\Controllers\ServiciosController@update');
+Route::delete('servicios/delete/{id}','App\Http\Controllers\ServiciosController@destroy');
