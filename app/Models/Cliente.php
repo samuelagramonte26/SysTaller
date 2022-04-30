@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Cliente extends Model
 {
    //use HasFactory;
-   public $timestamp = false;
-   protected $fillable = ['id','nombre','apellido','direccion','telefono','cedula'];
+   public $timestamps = false;
+   protected $fillable = ['id','nombre','apellido','direccion','telefono','cedula','usuarioCreador','usuarioEditor','usuarioEliminador','fechaCreado','fechaEliminado','fechaEditado'];
 
    protected $guardedc=[];
    public function scopeActive($query)

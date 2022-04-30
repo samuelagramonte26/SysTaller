@@ -38,7 +38,7 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
-        $cliente = Cliente::create($request->only('nombre','apellido','direccion','telefono','cedula'));
+        $cliente = Cliente::create($request->only('nombre','apellido','direccion','telefono','cedula','usuarioCreador','usuarioEditor','usuarioEliminador','fechaCreado','fechaEliminado','fechaEditado'));
         return response()->json(["Mensaje"=>"Registrado correctamente.","data"=>$cliente,"estado"=>true],200);
     }
 

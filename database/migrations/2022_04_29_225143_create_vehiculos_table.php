@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClientesTable extends Migration
+class CreateVehiculosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateClientesTable extends Migration
      */
     public function up()
     {
-        Schema::create('clientes', function (Blueprint $table) {
+        Schema::create('vehiculos', function (Blueprint $table) {
             $table->id();
-            $table->string("nombre");
-            $table->string("apellido");
-            $table->string("cedula");
-            $table->string("direccion");
-            $table->string("telefono");
+            $table->string("matricula");
+            $table->string("color");
+            $table->string("marca");
+            $table->string("modelo");
+            $table->unsignedBigInteger("clienteID");
             $table->boolean("active")->default(true);
             $table->date("fechaCreado")->nullable();
             $table->date("fechaEditado")->nullable();
@@ -27,6 +27,8 @@ class CreateClientesTable extends Migration
             $table->integer("usuarioCreador")->nullable();
             $table->integer("usuarioEditor")->nullable();
             $table->integer("usuarioEliminador")->nullable();
+          
+            $table->foreign("clienteID")->references("id")->on("clientes")->onDelete("cascade");
         });
     }
 
@@ -37,6 +39,6 @@ class CreateClientesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('clientes');
+        Schema::dropIfExists('vehiculos');
     }
 }

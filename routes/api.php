@@ -33,3 +33,10 @@ Route::get('cliente/{id}','App\Http\Controllers\ClienteController@show');
 Route::post('cliente/add','App\Http\Controllers\ClienteController@store');
 Route::put('cliente/edit/{id}','App\Http\Controllers\ClienteController@update');
 Route::delete('cliente/delete/{id}','App\Http\Controllers\ClienteController@destroy');
+
+//Vehiculos
+Route::get('vehiculos','App\Http\Controllers\VehiculoController@index');
+Route::get('vehiculos/{id}','App\Http\Controllers\VehiculoController@show');
+Route::post('vehiculos/add','App\Http\Controllers\VehiculoController@store');
+Route::put('vehiculos/edit/{id}','App\Http\Controllers\VehiculoController@update');
+Route::delete('vehiculos/delete/{id}','App\Http\Controllers\VehiculoController@destroy');

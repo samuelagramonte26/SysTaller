@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class taller extends Model
 {
    // use HasFactory;
-   public $timestamp = false;
-   protected $fillable = ['id','nombre','direccion','telefono','correo','rnc'];
+   public $timestamps  = false;
+   protected $fillable = ['id','nombre','direccion','telefono','correo','rnc','usuarioCreador','usuarioEditor','usuarioEliminador','fechaCreado','fechaEliminado','fechaEditado'];
 
    protected $guardedc=[];
    public function scopeActive($query)

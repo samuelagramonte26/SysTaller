@@ -21,7 +21,12 @@ class CreateTallersTable extends Migration
             $table->string("correo");
             $table->string("nombre");
             $table->boolean("active")->default(true);
-            $table->timestamps();
+            $table->date("fechaCreado")->nullable();
+            $table->date("fechaEditado")->nullable();
+            $table->date("fechaEliminado")->nullable();
+            $table->integer("usuarioCreador")->nullable();
+            $table->integer("usuarioEditor")->nullable();
+            $table->integer("usuarioEliminador")->nullable();
         });
     }
 

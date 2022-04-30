@@ -39,7 +39,7 @@ class tallerController extends Controller
     public function store(Request $request)
     {
         //
-        $taller = taller::create($request->only('direccion','telefono','rnc','correo','nombre'));
+        $taller = taller::create($request->only('direccion','telefono','rnc','correo','nombre','usuarioCreador','usuarioEditor','usuarioEliminador','fechaCreado','fechaEliminado','fechaEditado'));
         return response()->json(["Mensaje"=>"Registrado correctamente","data"=>$taller],200);
     }
 
