@@ -47,3 +47,10 @@ Route::get('servicios/{id}','App\Http\Controllers\ServiciosController@show');
 Route::post('servicios/add','App\Http\Controllers\ServiciosController@store');
 Route::put('servicios/edit/{id}','App\Http\Controllers\ServiciosController@update');
 Route::delete('servicios/delete/{id}','App\Http\Controllers\ServiciosController@destroy');
+
+//Mecanicos
+Route::get('mecanicos','App\Http\Controllers\MecanicoController@index');
+Route::get('mecanicos/{id}','App\Http\Controllers\MecanicoController@show');
+Route::post('mecanicos/add','App\Http\Controllers\MecanicoController@store');
+Route::put('mecanicos/edit/{id}','App\Http\Controllers\MecanicoController@update');
+Route::delete('mecanicos/delete/{id}','App\Http\Controllers\MecanicoController@destroy');

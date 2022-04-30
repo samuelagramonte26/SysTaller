@@ -15,7 +15,17 @@ class CreateMecanicosTable extends Migration
     {
         Schema::create('mecanicos', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string("nombre");
+            $table->string("apellido");
+            $table->date("fechaNacimiento");
+            $table->string("cedula");
+            $table->boolean("active")->default(true);
+            $table->date("fechaCreado")->nullable();
+            $table->date("fechaEditado")->nullable();
+            $table->date("fechaEliminado")->nullable();
+            $table->integer("usuarioCreador")->nullable();
+            $table->integer("usuarioEditor")->nullable();
+            $table->integer("usuarioEliminador")->nullable();
         });
     }
 
