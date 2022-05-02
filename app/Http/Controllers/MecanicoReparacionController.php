@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MecanicoReparacion;
 use Illuminate\Http\Request;
 
 class MecanicoReparacionController extends Controller
@@ -14,6 +15,13 @@ class MecanicoReparacionController extends Controller
     public function index()
     {
         //
+        $mecanicos = MecanicoReparacion::join("mecanicos", "mecanicos.id", "=", "mecanico_reparacions.mecanicoID")
+            ->join("reparacions", "reparacions.id", "=", "mecanico_reparacions.reparacionID")
+            ->select("mecanicos.nombre", "mecanico_reparacions.*")
+           // ->where("mecanico_reparacions.estado", 1)
+            ->where("mecanico_reparacions.active", 1)
+            ->get();
+        return response()->json($mecanicos, 200);
     }
 
     /**
@@ -35,6 +43,25 @@ class MecanicoReparacionController extends Controller
     public function store(Request $request)
     {
         //
+        $rules = [
+            "reparacionID" => "required",
+
+            "mecanicoID" => "required",
+
+            "fechaCreado" => "required"
+        ];
+        $messages = [
+            "reparacionID.required" => "El producto es requerido",
+            "mecanicoID.required" => "La cantidad es requerida",
+            "fechaCreado.required" => "La fecha es requerida"
+        ];
+        $validador = validator($request->all(), $rules, $messages);
+        if ($validador->fails())
+            return response()->json($validador->errors()->all(), 200);
+        else {
+            $mecanicos = MecanicoReparacion::create($request->only('mecanicoID', 'reparacionID', 'usuarioCreador', 'fechaCreado'));
+            return response()->json(["Mensaje" => "Registrado correctamente", "data" => $mecanicos, "estado" => true], 200);
+        }
     }
 
     /**
@@ -69,6 +96,30 @@ class MecanicoReparacionController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $mecanicos = MecanicoReparacion::find($id);
+        if (is_null($mecanicos) || $mecanicos->active == 0)
+            return response()->json(["Mensaje" => "No se pudo encontrar"], 400);
+        else {
+            $rules = [
+                "reparacionID" => "required",
+
+                "mecanicoID" => "required",
+
+                "fechaEditado" => "required"
+            ];
+            $messages = [
+                "reparacionID.required" => "El producto es requerido",
+                "mecanicoID.required" => "La cantidad es requerida",
+                "fechaEditado.required" => "La fecha es requerida"
+            ];
+            $validador = validator($request->all(), $rules, $messages);
+            if ($validador->fails())
+                return response()->json($validador->errors()->all(), 200);
+            else {
+                $mecanicos->update($request->all());
+                return response()->json(["Mensaje" => "Modificado correctamente", "data" => $mecanicos, "estado" => true], 200);
+            }
+        }
     }
 
     /**

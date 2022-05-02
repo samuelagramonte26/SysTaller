@@ -9,7 +9,7 @@ class MecanicoReparacion extends Model
 {
     //use HasFactory;
     public $timestamps = false;
-    protected $fillable = ['id', 'reparacionID', 'mecanicoID', 'usuarioCreador', 'usuarioEditor', 'usuarioEliminador', 'fechaCreado', 'fechaEliminado', 'fechaEditado'];
+    protected $fillable = ['id', 'reparacionID', 'mecanicoID','estado', 'usuarioCreador', 'usuarioEditor', 'usuarioEliminador', 'fechaCreado', 'fechaEliminado', 'fechaEditado'];
     public function scopeActive($query)
     {
         $query->where("active", 1);

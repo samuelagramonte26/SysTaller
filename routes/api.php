@@ -104,3 +104,10 @@ Route::get('detalleReparacion/{id}','App\Http\Controllers\DetalleReparacionContr
 Route::post('detalleReparacion/add','App\Http\Controllers\DetalleReparacionController@store');
 Route::put('detalleReparacion/edit/{id}','App\Http\Controllers\DetalleReparacionController@update');
 Route::delete('detalleReparacion/delete/{id}','App\Http\Controllers\DetalleReparacionController@destroy');
+
+//MecanicoReparacion
+Route::get('mecanicoReparacion','App\Http\Controllers\MecanicoReparacionController@index');
+Route::get('mecanicoReparacion/{id}','App\Http\Controllers\MecanicoReparacionController@show');
+Route::post('mecanicoReparacion/add','App\Http\Controllers\MecanicoReparacionController@store');
+Route::put('mecanicoReparacion/edit/{id}','App\Http\Controllers\MecanicoReparacionController@update');
+Route::delete('mecanicoReparacion/delete/{id}','App\Http\Controllers\MecanicoReparacionController@destroy');
