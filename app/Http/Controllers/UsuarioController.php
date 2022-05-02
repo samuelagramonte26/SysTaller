@@ -10,7 +10,7 @@ class UsuarioController extends Controller
     public function index()
     {
         //
-        $usuario = Usuarios::join("tipo_usuarios","tipo_usuarios.id","=","usuarios.id")->select("usuarios.*","tipo_usuarios.tipo as rol")->get();
+        $usuario = Usuarios::join("tipo_usuarios","tipo_usuarios.id","=","usuarios.id")->select("usuarios.*","tipo_usuarios.tipo as rol")->where('usuarios.active',1)->get();
         return response()->json($usuario, 200);
     }
 
@@ -47,7 +47,7 @@ class UsuarioController extends Controller
         if ($validador->fails())
             return response()->json($validador->errors()->all(), 200);
         else {
-            $request->clave = base64_encode($request->clave);
+            $request->clave = md5($request->clave);
             $usuario = Usuarios::create($request->only('usuario', 'clave','tipoID', 'usuarioCreador', 'fechaCreado'));
             return response()->json(["Mensaje" => "Registrado correctamente", "data" => $usuario, "estado" => true], 200);
         }

@@ -63,9 +63,16 @@ Route::post('tipoUsuarios/add','App\Http\Controllers\TipoUsuarioController@store
 Route::put('tipoUsuarios/edit/{id}','App\Http\Controllers\TipoUsuarioController@update');
 Route::delete('tipoUsuarios/delete/{id}','App\Http\Controllers\TipoUsuarioController@destroy');
 
-//TipoUsuarios
+//Usuarios
 Route::get('usuarios','App\Http\Controllers\UsuarioController@index');
 Route::get('usuarios/{id}','App\Http\Controllers\UsuarioController@show');
 Route::post('usuarios/add','App\Http\Controllers\UsuarioController@store');
 Route::put('usuarios/edit/{id}','App\Http\Controllers\UsuarioController@update');
 Route::delete('usuarios/delete/{id}','App\Http\Controllers\UsuarioController@destroy');
+
+//Repuestos
+Route::get('repuestos','App\Http\Controllers\RepuestoController@index');
+Route::get('repuestos/{id}','App\Http\Controllers\RepuestoController@show');
+Route::post('repuestos/add','App\Http\Controllers\RepuestoController@store');
+Route::put('repuestos/edit/{id}','App\Http\Controllers\RepuestoController@update');
+Route::delete('repuestos/delete/{id}','App\Http\Controllers\RepuestoController@destroy');
