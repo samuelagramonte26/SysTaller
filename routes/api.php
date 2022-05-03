@@ -111,3 +111,10 @@ Route::get('mecanicoReparacion/{id}','App\Http\Controllers\MecanicoReparacionCon
 Route::post('mecanicoReparacion/add','App\Http\Controllers\MecanicoReparacionController@store');
 Route::put('mecanicoReparacion/edit/{id}','App\Http\Controllers\MecanicoReparacionController@update');
 Route::delete('mecanicoReparacion/delete/{id}','App\Http\Controllers\MecanicoReparacionController@destroy');
+
+//Facturacion
+Route::get('facturacion','App\Http\Controllers\FacturacionController@index');
+Route::get('facturacion/{id}','App\Http\Controllers\FacturacionController@show');
+Route::post('facturacion/add','App\Http\Controllers\FacturacionController@store');
+Route::put('facturacion/edit/{id}','App\Http\Controllers\FacturacionController@update');
+Route::delete('facturacion/delete/{id}','App\Http\Controllers\FacturacionController@destroy');

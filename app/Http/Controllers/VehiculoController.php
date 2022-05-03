@@ -15,7 +15,7 @@ class VehiculoController extends Controller
     public function index()
     {
         //
-        $vechiculos = Vehiculos::join('clientes', 'clientes.id', '=', 'vehiculos.id')
+        $vechiculos = Vehiculos::join('clientes', 'clientes.id', '=', 'vehiculos.clienteID')
             ->select(
                 'vehiculos.*',
                 'clientes.nombre as cliente'
