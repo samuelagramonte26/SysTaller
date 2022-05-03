@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DetalleReparacion;
+use App\Models\MecanicoReparacion;
 use App\Models\Reparacion;
 use Illuminate\Http\Request;
 
@@ -38,29 +39,29 @@ class DetalleReparacionController extends Controller
     {
         //
         $reparacion = Reparacion::find($request->reparacionID);
-        if (is_null($reparacion) || $reparacion->active==0 || $reparacion->estado == 3)
+        if (is_null($reparacion) || $reparacion->active == 0 || $reparacion->estado == 3)
             return response()->json(["Mensaje" => "No se pudo encontrar"], 400);
-        else{
+        else {
             $rules = [
                 "productoID" => "required",
-              
-                "cantidad"=>"required",
-            
+
+                "cantidad" => "required",
+
                 "fechaCreado" => "required"
             ];
             $messages = [
                 "productoID.required" => "El producto es requerido",
-                "cantidad.required" => "La cantidad es requerida",   
+                "cantidad.required" => "La cantidad es requerida",
                 "fechaCreado.required" => "La fecha es requerida"
             ];
-        $validador = validator($request->all(), $rules, $messages);
-        if ($validador->fails())
-            return response()->json($validador->errors()->all(), 200);
-        else {
-            $detalle = DetalleReparacion::create($request->only('productoID', 'reparacionID','cantidad','subTotal', 'usuarioCreador', 'fechaCreado'));
-            return response()->json(["Mensaje" => "Registrado correctamente", "data" => $detalle, "estado" => true], 200);
-      }
-    }
+            $validador = validator($request->all(), $rules, $messages);
+            if ($validador->fails())
+                return response()->json($validador->errors()->all(), 200);
+            else {
+                $detalle = DetalleReparacion::create($request->only('productoID', 'reparacionID', 'cantidad', 'subTotal', 'usuarioCreador', 'fechaCreado'));
+                return response()->json(["Mensaje" => "Registrado correctamente", "data" => $detalle, "estado" => true], 200);
+            }
+        }
     }
 
     /**
@@ -72,17 +73,16 @@ class DetalleReparacionController extends Controller
     public function show($id)
     {
         //
-        $detalles  = DetalleReparacion::join("reparacions","reparacions.id","=","reparacionID")
-        ->join("productos","productos.id","=","productoID")
-        ->select("productos.producto","detalle_reparacions.*")
-        ->where("reparacions.id",$id)
-        ->where("detalle_reparacions.active", 1 )
-        ->get();
-        if(is_null($detalles))
-        return response()->json(["Mensaje"=>"No se encontro ningun registro.","estado"=>false],404);
+        $detalles  = DetalleReparacion::join("reparacions", "reparacions.id", "=", "reparacionID")
+            ->join("productos", "productos.id", "=", "productoID")
+            ->select("productos.producto", "detalle_reparacions.*")
+            ->where("reparacions.id", $id)
+            ->where("detalle_reparacions.active", 1)
+            ->get();
+        if (is_null($detalles))
+            return response()->json(["Mensaje" => "No se encontro ningun registro.", "estado" => false], 404);
         else
-        return response()->json($detalles,200);
-
+            return response()->json($detalles, 200);
     }
 
     /**
@@ -108,32 +108,31 @@ class DetalleReparacionController extends Controller
         //
         $reparacion = Reparacion::find($request->reparacionID);
         $detalle = DetalleReparacion::find($id);
-        if (is_null($reparacion) || $reparacion->active==0 || $reparacion->estado == 3)
+        if (is_null($reparacion) || $reparacion->active == 0 || $reparacion->estado == 3)
             return response()->json(["Mensaje" => "No se pudo encontrar la reparacion"], 404);
-        else if(is_null($detalle) || $detalle->active==0){
+        else if (is_null($detalle) || $detalle->active == 0) {
             return response()->json(["Mensaje" => "No se pudo encontrar el detalle"], 404);
-
-        }else{
+        } else {
             $rules = [
                 "productoID" => "required",
-              
-                "cantidad"=>"required",
-            
+
+                "cantidad" => "required",
+
                 "fechaEditado" => "required"
             ];
             $messages = [
                 "productoID.required" => "El producto es requerido",
-                "cantidad.required" => "La cantidad es requerida",   
+                "cantidad.required" => "La cantidad es requerida",
                 "fechaEditado.required" => "La fecha es requerida"
             ];
-        $validador = validator($request->all(), $rules, $messages);
-        if ($validador->fails())
-            return response()->json($validador->errors()->all(), 200);
-        else {
-            $detalle->update($request->all());
-            return response()->json(["Mensaje" => "Modificado correctamente", "data" => $detalle, "estado" => true], 200);
-      }
-    }
+            $validador = validator($request->all(), $rules, $messages);
+            if ($validador->fails())
+                return response()->json($validador->errors()->all(), 200);
+            else {
+                $detalle->update($request->all());
+                return response()->json(["Mensaje" => "Modificado correctamente", "data" => $detalle, "estado" => true], 200);
+            }
+        }
     }
 
     /**
@@ -146,14 +145,31 @@ class DetalleReparacionController extends Controller
     {
         //
         $detalle = DetalleReparacion::find($id);
-         if(is_null($detalle) || $detalle->active==0)
+        if (is_null($detalle) || $detalle->active == 0)
             return response()->json(["Mensaje" => "No se pudo encontrar el detalle"], 404);
 
-        else{
+        else {
             $detalle->active = 0;
             $detalle->save();
-            return response()->json(["Mensaje"=>"Eliminado correctamente","estado"=>true],200);
+            return response()->json(["Mensaje" => "Eliminado correctamente", "estado" => true], 200);
+        }
+    }
 
+    public function terminarReparacion($id)
+    {
+        $reparacion = Reparacion::find($id);
+        if (is_null($reparacion) || $reparacion->active == 0 || $reparacion->estado == 3)
+            return response()->json(["Mensaje" => "No se pudo encontrar.", "estado" => false], 404);
+        else {
+            $reparacion->estado = 3;
+            $reparacion->save();
+            $mecanico = MecanicoReparacion::select("estado","id")->where("reparacionID",$id)->get();
+            //return response($mecanico,200);
+            $estadoMecanico = MecanicoReparacion::find($mecanico[0]->id);
+           $estadoMecanico->estado = 0;
+           
+            $estadoMecanico->save();
+            return response()->json(["Mensaje"=>"Reparacion terminada.","estado"=>true],200);
         }
     }
 }

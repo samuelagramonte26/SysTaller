@@ -22,8 +22,8 @@ class FacturacionController extends Controller
         ->join("reparacions","reparacions.id","=","reparacionID")
         ->join("clientes","clientes.id","=","reparacions.clienteID")
         ->join("vehiculos","vehiculos.id","=","reparacions.vehiculoID")
-        ->select("tallers.*","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.color","facturas.total","facturas.itbis","facturas.numero")
-        //->where("reparacions.estado",3)
+        ->select("tallers.nombre","tallers.direccion","tallers.telefono","tallers.rnc","tallers.correo","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.color","facturas.total","facturas.itbis","facturas.numero")
+        ->where("reparacions.estado",3)
         ->where("facturas.active",1)
         ->get();
         return response()->json($facturas,200);
@@ -90,7 +90,7 @@ class FacturacionController extends Controller
             ->join("reparacions","reparacions.id","=","reparacionID")
             ->join("clientes","clientes.id","=","reparacions.clienteID")
             ->join("vehiculos","vehiculos.id","=","reparacions.vehiculoID")
-            ->select("tallers.*","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.color","facturas.total","facturas.itbis","facturas.numero")
+            ->select("tallers.nombre","tallers.direccion","tallers.telefono","tallers.rnc","tallers.correo","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.color","facturas.total","facturas.itbis","facturas.numero")
             ->where("facturas.id",$id)
             ->get();
 

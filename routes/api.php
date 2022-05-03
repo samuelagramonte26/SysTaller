@@ -99,7 +99,7 @@ Route::put('reparacion/edit/{id}','App\Http\Controllers\ReparacionController@upd
 Route::delete('reparacion/delete/{id}','App\Http\Controllers\ReparacionController@destroy');
 
 //DetalleReparacion
-//Route::get('detalleReparacion','App\Http\Controllers\ReparacionController@index');
+Route::get('terminarReparacion/{id}','App\Http\Controllers\DetalleReparacionController@terminarReparacion');
 Route::get('detalleReparacion/{id}','App\Http\Controllers\DetalleReparacionController@show');
 Route::post('detalleReparacion/add','App\Http\Controllers\DetalleReparacionController@store');
 Route::put('detalleReparacion/edit/{id}','App\Http\Controllers\DetalleReparacionController@update');

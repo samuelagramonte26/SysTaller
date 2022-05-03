@@ -59,8 +59,10 @@ class MecanicoReparacionController extends Controller
         if ($validador->fails())
             return response()->json($validador->errors()->all(), 200);
         else {
+           
             $mecanicos = MecanicoReparacion::create($request->only('mecanicoID', 'reparacionID', 'usuarioCreador', 'fechaCreado'));
             return response()->json(["Mensaje" => "Registrado correctamente", "data" => $mecanicos, "estado" => true], 200);
+            
         }
     }
 
