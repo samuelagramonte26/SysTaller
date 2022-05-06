@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Vehiculos;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Constraint\Count;
 
 class VehiculoController extends Controller
 {
@@ -43,6 +45,7 @@ class VehiculoController extends Controller
      */
     public function store(Request $request)
     {
+       
         //
         $rules = [
             'color' => 'required',
@@ -50,7 +53,7 @@ class VehiculoController extends Controller
             'modelo' => 'required',
             'clienteID' => 'required',
             'matricula' => 'required',
-            'fechaCreado' => 'required'
+            
         ];
         $messages = [
             'color.required' => 'El color es requerido',
@@ -58,14 +61,24 @@ class VehiculoController extends Controller
             'modelo.required' => 'El modelo es requerido',
             'clienteID.required' => 'El cliente es requerido',
             'matricula.required' => 'La maricula es requerida',
-            'fechaCreado.required' => 'La fecha es requerida'
+          
         ];
         $validador = validator($request->all(), $rules, $messages);
         if ($validador->fails()) {
             return response($validador->errors()->all(), 200);
         } else {
+            $request->request->add(array('fechaCreado'=>date('Y-d-m')));
+          
             $vechiculo = Vehiculos::create($request->only('color', 'marca', 'modelo', 'clienteID', 'matricula', 'usuarioCreador', 'fechaCreado'));
-            return response()->json(["Mensaje" => "Registrado correctamente.", "estado" => true, "data" => $vechiculo], 200);
+           $cliente = Cliente::find($request->clienteID);
+          
+         
+           $dato[0] = json_decode(json_encode($vechiculo),true);
+           $dato[0]["cliente"] = $cliente->nombre;
+         
+        
+ 
+            return response()->json(["Mensaje" => "Registrado correctamente.", "estado" => true, "data" => $dato], 200);
         }
     }
 
@@ -118,7 +131,7 @@ class VehiculoController extends Controller
                 'modelo' => 'required',
                 'clienteID' => 'required',
                 'matricula' => 'required',
-                'fechaEditado' => 'required'
+                
             ];
             $messages = [
                 'color.required' => 'El color es requerido',
@@ -126,12 +139,14 @@ class VehiculoController extends Controller
                 'modelo.required' => 'El modelo es requerido',
                 'clienteID.required' => 'El cliente es requerido',
                 'matricula.required' => 'La maricula es requerida',
-                'fechaEditado.required' => 'La fecha es requerida'
+                
             ];
             $validador = validator($request->all(), $rules, $messages);
             if ($validador->fails()) {
                 return response($validador->errors()->all(), 200);
             }
+            $request->request->add(array('fechaCreado'=>date('Y-d-m')));
+
             $vehiculo->update($request->all());
             $vehiculo->save();
             return response()->json(["Mensaje"=>"Modificado correctamente.","estado"=>true,"data"=>$vehiculo],200);

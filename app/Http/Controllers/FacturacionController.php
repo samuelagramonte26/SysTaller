@@ -22,7 +22,7 @@ class FacturacionController extends Controller
         ->join("reparacions","reparacions.id","=","reparacionID")
         ->join("clientes","clientes.id","=","reparacions.clienteID")
         ->join("vehiculos","vehiculos.id","=","reparacions.vehiculoID")
-        ->select("tallers.nombre","tallers.direccion","tallers.telefono","tallers.rnc","tallers.correo","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.color","facturas.total","facturas.itbis","facturas.numero")
+        ->select("facturas.id","tallers.nombre as taller","tallers.direccion","tallers.telefono","tallers.rnc","tallers.correo","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.modelo","vehiculos.marca","vehiculos.color","facturas.total","facturas.itbis","facturas.numero")
         ->where("reparacions.estado",3)
         ->where("facturas.active",1)
         ->get();
@@ -45,29 +45,27 @@ class FacturacionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
         //
-        $rules = [
-            "reparacionID"=>"required",
-            "tallerID"=>"required",
-            "fecha"=>"required"
-        ];
-        $messages = [
-            "reparacionID.required"=>"La reparacion es requerida",
-            "tallerID.required"=>"El  taller es requerido",
-            "fecha.required"=>"La fecha es requerida"
-        ];
-        $validador = validator($request->all(),$rules,$messages);
-        if($validador->fails()){
-            return response()->json($validador->errors()->all(),200);
-        }
-        $subtotales = DetalleReparacion::where("reparacionID",$request->reparacionID)->sum("subTotal");
+        // $rules = [
+           
+        // ];
+        // $messages = [
+        //     "reparacionID.required"=>"La reparacion es requerida",
+            
+        // ];
+        // $validador = validator($request->all(),$rules,$messages);
+        // if($validador->fails()){
+        //     return response()->json($validador->errors()->all(),200);
+        // }
+        $subtotales = DetalleReparacion::where("reparacionID",$id)->sum("subTotal");
         // array_push($reque,$subtotales);
         $itbis = $subtotales * 0.18;
-        $reparacion = Reparacion::select("reparacions.*")->where("id",$request->reparacionID)->get();
+        $subtotales += $itbis;
+        $reparacion = Reparacion::select("reparacions.*")->where("id",$id)->get();
         $numero = $reparacion[0]->id . $reparacion[0]->clienteID . $reparacion[0]->vehiculoID;
-        $request->request->add(array("total"=>$subtotales,"itbis"=>$itbis,"numero"=>$numero));
+        $request->request->add(array("reparacionID"=>$id,"tallerID"=>1,"fecha"=>'2022-09-09',"total"=>$subtotales,"itbis"=>$itbis,"numero"=>$numero));
        // return response($request,200);
         $factura = Factura::create($request->only('tallerID',"reparacionID","fecha","fechaCreado","usuarioCreador","total","itbis","numero"));
         return response()->json(["Mensaje"=>"Registrado correctamente.","estado"=>true,"data"=>$factura],200);
@@ -90,14 +88,15 @@ class FacturacionController extends Controller
             ->join("reparacions","reparacions.id","=","reparacionID")
             ->join("clientes","clientes.id","=","reparacions.clienteID")
             ->join("vehiculos","vehiculos.id","=","reparacions.vehiculoID")
-            ->select("tallers.nombre","tallers.direccion","tallers.telefono","tallers.rnc","tallers.correo","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.color","facturas.total","facturas.itbis","facturas.numero")
+            ->select("tallers.nombre","tallers.direccion","tallers.telefono","tallers.rnc","tallers.correo","clientes.nombre as cliente","clientes.apellido","vehiculos.matricula","vehiculos.color","facturas.total","facturas.itbis","facturas.numero","facturas.fecha")
             ->where("facturas.id",$id)
             ->get();
-
-            $detalle = DetalleReparacion::join("productos","productos.id","=","productoID")->select("detalle_reparacions.subTotal","productos.producto")->where("reparacionID",$factura->reparacionID)->get();
+            $subtotales = DetalleReparacion::where("reparacionID",$factura->reparacionID)->sum("subTotal");
+            $detalle = DetalleReparacion::join("productos","productos.id","=","productoID")->select("detalle_reparacions.subTotal","productos.producto","detalle_reparacions.cantidad","productos.montoInicial as precio")->where("reparacionID",$factura->reparacionID)->get();
            $mecanicos = MecanicoReparacion::join("mecanicos","mecanicos.id","=","mecanicoID")->select("mecanicos.nombre","mecanicos.apellido")->where("reparacionID",$factura->reparacionID)->get();
            $facturaDetalle["factura"]= $facturas;
            $facturaDetalle["detallles"]= $detalle;
+           $facturaDetalle['subtotal'] =$subtotales;
            $facturaDetalle["mecanicos"]= $mecanicos;
            
         return response()->json($facturaDetalle,200);

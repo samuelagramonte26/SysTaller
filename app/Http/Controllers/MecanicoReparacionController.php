@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MecanicoReparacion;
+use App\Models\Reparacion;
 use Illuminate\Http\Request;
 
 class MecanicoReparacionController extends Controller
@@ -16,9 +17,11 @@ class MecanicoReparacionController extends Controller
     {
         //
         $mecanicos = MecanicoReparacion::join("mecanicos", "mecanicos.id", "=", "mecanico_reparacions.mecanicoID")
-            ->join("reparacions", "reparacions.id", "=", "mecanico_reparacions.reparacionID")
-            ->select("mecanicos.nombre", "mecanico_reparacions.*")
-           // ->where("mecanico_reparacions.estado", 1)
+        ->join("reparacions", "reparacions.id", "=", "mecanico_reparacions.reparacionID")
+        ->join("clientes", "clientes.id", "=", "reparacions.clienteID")
+        ->join("vehiculos", "vehiculos.id", "=", "reparacions.vehiculoID")
+            ->select("mecanicos.nombre as mecanico","clientes.nombre as cliente","vehiculos.color","vehiculos.matricula","vehiculos.modelo","vehiculos.marca", "mecanico_reparacions.*")
+            ->where("mecanico_reparacions.estado", 1)
             ->where("mecanico_reparacions.active", 1)
             ->get();
         return response()->json($mecanicos, 200);
@@ -61,6 +64,9 @@ class MecanicoReparacionController extends Controller
         else {
            
             $mecanicos = MecanicoReparacion::create($request->only('mecanicoID', 'reparacionID', 'usuarioCreador', 'fechaCreado'));
+            $reparacion = Reparacion::find($request->reparacionID);
+            $reparacion->estado = 2;
+            $reparacion->save();
             return response()->json(["Mensaje" => "Registrado correctamente", "data" => $mecanicos, "estado" => true], 200);
             
         }

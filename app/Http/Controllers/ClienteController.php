@@ -105,7 +105,7 @@ class ClienteController extends Controller
         else{
             $cliente->active = 0;
             $cliente->save();
-            return response()->json(["Mensaje"=>"Eliminado correctamente","estado"=>true],200);
+            return response()->json(["Mensaje"=>"Eliminado correctamente","data"=>$cliente,"estado"=>true],200);
         }
     }
 }

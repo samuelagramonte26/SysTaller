@@ -75,7 +75,7 @@ class DetalleReparacionController extends Controller
         //
         $detalles  = DetalleReparacion::join("reparacions", "reparacions.id", "=", "reparacionID")
             ->join("productos", "productos.id", "=", "productoID")
-            ->select("productos.producto", "detalle_reparacions.*")
+            ->select("productos.producto", "detalle_reparacions.*","reparacions.estado")
             ->where("reparacions.id", $id)
             ->where("detalle_reparacions.active", 1)
             ->get();
