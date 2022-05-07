@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TablaPaginacion from '../TablaPaginacion'
-import { GetData,PostData,PutData,DeleteData } from '../provider/Api'
+import { GetData, PostData, PutData, DeleteData } from '../provider/Api'
 import { VehiculosColumns } from '../provider/common/Columns'
 import Alert from '../provider/common/Alert'
 import { ModalVehiculo } from '../provider/form/ModalVehiculo'
@@ -9,7 +9,7 @@ import { handleFormVehiculo } from '../provider/common/Handle'
 export const Vehiculos = () => {
   const [dataVehiculos, setVehiculos] = useState([])
   useEffect(() => {
-    GetData(setVehiculos,'vehiculos');
+    GetData(setVehiculos, 'vehiculos');
   }, [])
 
 
@@ -46,7 +46,7 @@ export const Vehiculos = () => {
     }
   }
   const handResult = (data) => {
-    console.log(data.data)
+
     if (data.data.estado) {
       if (method.add) {
         setVehiculos(dataVehiculos.concat(data.data.data))
@@ -89,7 +89,7 @@ export const Vehiculos = () => {
       ...datosPrevios,
       [name]: value
     }))
-    
+
   }
   const handleEdit = (vehiculo) => {
     setMethod({ add: false, edit: true });
@@ -100,7 +100,7 @@ export const Vehiculos = () => {
     if (method.add) {
       PostData(handResult, handleFormVehiculo(vehiculoDatos), 'vehiculos');
     } else {
-      console.log(vehiculoDatos);
+
       PutData(vehiculoDatos.id, handleFormVehiculo(vehiculoDatos), handResult, 'vehiculos');
 
     }

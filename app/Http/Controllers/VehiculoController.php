@@ -145,7 +145,7 @@ class VehiculoController extends Controller
             if ($validador->fails()) {
                 return response($validador->errors()->all(), 200);
             }
-            $request->request->add(array('fechaCreado'=>date('Y-d-m')));
+            $request->request->add(array('fechaEditado'=>date('Y-d-m')));
 
             $vehiculo->update($request->all());
             $vehiculo->save();
@@ -167,6 +167,7 @@ class VehiculoController extends Controller
             return response()->json(["Mensaje" => "No se encontro ningun registro", "estado" => false], 404);
         else{
             $vehiculo->active = 0;
+            $vehiculo->fechaEliminado = date('Y-d-m');
             $vehiculo->save();
             return response()->json(["Mensaje"=>"Eliminado correctamente.","estado"=>true,"data"=>$vehiculo],200);
 
