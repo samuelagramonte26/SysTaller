@@ -54,6 +54,8 @@ class MecanicoController extends Controller
         if ($validador->fails())
             return response()->json($validador->errors()->all(), 200);
         else {
+            $request->request->add(array('fechaCreado' => date('Y-d-m')));
+
         $mecanico = Mecanicos::create($request->only('nombre','apellido','fechaNacimiento','cedula','usuarioCreador','fechaCreado'));
         return response()->json(["Mensaje"=>"Registrado correctamente.","data"=>$mecanico,"estado"=>true],200);
         }
@@ -116,6 +118,8 @@ class MecanicoController extends Controller
         if ($validador->fails())
             return response()->json($validador->errors()->all(), 200);
         else {
+            $request->request->add(array('fechaEditado' => date('Y-d-m')));
+
         $mecanico->update($request->all());
         return response()->json(["Mensaje"=>"Modificado correctamente.","data"=>$mecanico,"estado"=>true],200);
         }
@@ -136,6 +140,7 @@ class MecanicoController extends Controller
             return response()->json(["Mensaje" => "No se encontro ningun registro.", "estado" => false], 404);
         else {
             $mecanico->active = 0;
+            $mecanico->fechaEliminado = date('Y-d-m');
             $mecanico->save();
             return response()->json(["Mensaje" => "Eliminado correctamente.", "data" => $mecanico, "estado" => true], 200);
         }

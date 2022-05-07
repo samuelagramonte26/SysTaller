@@ -16,8 +16,7 @@ class tallerController extends Controller
     {
         //
         $tallers = taller::active()->get();
-        return response()->json($tallers,200);
-
+        return response()->json($tallers, 200);
     }
 
     /**
@@ -39,8 +38,32 @@ class tallerController extends Controller
     public function store(Request $request)
     {
         //
-        $taller = taller::create($request->only('direccion','telefono','rnc','correo','nombre','usuarioCreador','usuarioEditor','usuarioEliminador','fechaCreado','fechaEliminado','fechaEditado'));
-        return response()->json(["Mensaje"=>"Registrado correctamente","data"=>$taller],200);
+        $rules = [
+            "nombre" => "required",
+
+            "direccion" => "required",
+            "rnc" => "required",
+            "correo" => "required",
+
+
+            "telefono" => "required"
+        ];
+        $messages = [
+            "nombre.required" => "El nombre es requerido",
+            "direccion.required" => "La direccion es requerida",
+            "rnc.required" => "El RNC es requerido",
+            "correo.required" => "El correo es requerido",
+            "telefono.required" => "El telefono es requerido"
+        ];
+        $validador = validator($request->all(), $rules, $messages);
+        if ($validador->fails())
+            return response()->json($validador->errors()->all(), 200);
+        else {
+            $request->request->add(array('fechaCreado' => date('Y-d-m')));
+
+            $taller = taller::create($request->only('direccion', 'telefono', 'rnc', 'correo', 'nombre', 'usuarioCreador', 'fechaCreado'));
+            return response()->json(["Mensaje" => "Registrado correctamente", "estado" => true, "data" => $taller], 200);
+        }
     }
 
     /**
@@ -53,12 +76,10 @@ class tallerController extends Controller
     {
         //
         $taller = taller::find($id);
-        if(is_null($taller))
-            return response()->json(["Mensaje"=>"No se pudo encontrar"],400);
+        if (is_null($taller))
+            return response()->json(["Mensaje" => "No se pudo encontrar","estado"=>false], 400);
         else
-        return response()->json($taller,200);
-
-        
+            return response()->json($taller, 200);
     }
 
     /**
@@ -83,12 +104,36 @@ class tallerController extends Controller
     {
         //
         $taller = taller::find($id);
-        if(is_null($taller))
-        return response()->json(["Mensaje"=>"No se encuentra el registro de id:".$id],400);
-        else{
-            $taller->update($request->all());
-            $taller->save();
-            return response()->json(["Mensaje"=>"Actualizado correctamente!","data"=>$taller],200);
+        if (is_null($taller))
+            return response()->json(["Mensaje" => "No se encuentra el registro de id:" . $id,"estado"=>false], 400);
+        else {
+            $rules = [
+                "nombre" => "required",
+
+                "direccion" => "required",
+                "rnc" => "required",
+                "correo" => "required",
+
+
+                "telefono" => "required"
+            ];
+            $messages = [
+                "nombre.required" => "El nombre es requerido",
+                "direccion.required" => "La direccion es requerida",
+                "rnc.required" => "El RNC es requerido",
+                "correo.required" => "El correo es requerido",
+                "telefono.required" => "El telefono es requerido"
+            ];
+            $validador = validator($request->all(), $rules, $messages);
+            if ($validador->fails())
+                return response()->json($validador->errors()->all(), 200);
+            else {
+                $request->request->add(array('fechaEditado' => date('Y-d-m')));
+
+                $taller->update($request->all());
+                $taller->save();
+                return response()->json(["Mensaje" => "Actualizado correctamente!","estado"=>true ,"data" => $taller], 200);
+            }
         }
     }
 
@@ -102,13 +147,13 @@ class tallerController extends Controller
     {
         //
         $taller = taller::find($id);
-        if(is_null($taller))
-        return response()->json(["Mensaje"=>"No se encuentra el registro de id:".$id],400);
-        else{
+        if (is_null($taller))
+            return response()->json(["Mensaje" => "No se encuentra el registro de id:" . $id,"estado"=>false], 400);
+        else {
             $taller->active = 0;
+            $taller->fechaEliminado = date('Y-d-m');
             $taller->save();
-            return response()->json(["Mensaje"=>"Eliminado correctamente!","data"=>$taller],200);
-
+            return response()->json(["Mensaje" => "Eliminado correctamente!","estado"=>true, "data" => $taller], 200);
         }
     }
 }

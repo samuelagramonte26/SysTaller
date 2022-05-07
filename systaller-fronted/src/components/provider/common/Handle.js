@@ -20,3 +20,23 @@ export  const handleFormCliente = (clienteDatos) => {
   
     return form;
   }
+  export const handleFormMecanico = (mecanicoDatos)=>{
+    let form = new FormData();
+    form.append('nombre', mecanicoDatos.nombre);
+    form.append('apellido', mecanicoDatos.apellido);
+    form.append('cedula', mecanicoDatos.cedula);
+    form.append('fechaNacimiento', mecanicoDatos.fechaNacimiento);
+   
+    return form;
+  }
+
+  export  const handleFormTaller = (tallerDatos) => {
+    let form = new FormData();
+    form.append('nombre', tallerDatos.nombre);
+    form.append('correo', tallerDatos.correo);
+    form.append('rnc', tallerDatos.rnc);
+    form.append('direccion', tallerDatos.direccion);
+    form.append('telefono', tallerDatos.telefono);
+  
+    return form;
+  }
