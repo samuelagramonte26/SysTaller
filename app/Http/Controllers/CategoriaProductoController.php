@@ -41,19 +41,21 @@ class CategoriaProductoController extends Controller
         $rules = [
             "categoria" => "required",
             "descripcion" => "required",
-            "fechaCreado" => "required"
+           
         ];
         $messages = [
             "categoria.required" => "La categoria es requerida.",
             "descripcion.required" => "La descripcion es requerida",
-            "fechaCreado.required" => "La fecha es requerida"
+          
         ];
         $validador = validator($request->all(), $rules, $messages);
         if ($validador->fails())
             return response()->json($validador->errors()->all(), 200);
         else {
+            $request->request->add(array('fechaCreado' => date('Y-d-m')));
+
             $categoria = CategoriaProductos::create($request->only('categoria','descripcion','usuarioCreador','fechaCreado'));
-            return response()->json(["Mensaje"=>"Registrado correctamente","data"=>$categoria],200);
+            return response()->json(["Mensaje"=>"Registrado correctamente","estado"=>true,"data"=>$categoria],200);
         }
     }
 
@@ -101,20 +103,21 @@ class CategoriaProductoController extends Controller
         $rules = [
             "categoria" => "required",
             "descripcion" => "required",
-            "fechaEditado" => "required"
+        
         ];
         $messages = [
             "categoria.required" => "La categoria es requerida.",
             "descripcion.required" => "La descripcion es requerida",
-            "fechaCreado.required" => "La fecha es requerida"
+           
         ];
         $validador = validator($request->all(), $rules, $messages);
         if ($validador->fails())
             return response()->json($validador->errors()->all(), 200);
         else {
+            $request->request->add(array('fechaEditado' => date('Y-d-m')));
             $categoria->update($request->all());
             $categoria->save();
-            return response()->json(["Mensaje"=>"Modificado correctamente","data"=>$categoria],200);
+            return response()->json(["Mensaje"=>"Modificado correctamente","estado"=>true,"data"=>$categoria],200);
         }
     }
     }
@@ -133,8 +136,9 @@ class CategoriaProductoController extends Controller
             return response()->json(["Mensaje" => "No se encontro ningun registro.", "estado" => false], 404);
         else {
             $categoria->active = 0;
+            $categoria->fechaEliminado = date('Y-d-m');
             $categoria->save();
-            return response()->json(["Mensaje" => "Eliminado correctamente.", "data" => $categoria, "estado" => true], 200);
+            return response()->json(["Mensaje" => "Eliminado correctamente.","estado" => true], 200);
         }
     }
 }

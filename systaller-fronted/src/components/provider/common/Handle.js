@@ -40,3 +40,11 @@ export  const handleFormCliente = (clienteDatos) => {
   
     return form;
   }
+  export  const handleFormCategoria = (categoriaDatos) => {
+    let form = new FormData();
+    form.append('categoria', categoriaDatos.categoria);
+    form.append('descripcion', categoriaDatos.descripcion);
+   
+  
+    return form;
+  }
