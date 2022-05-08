@@ -149,7 +149,12 @@ class VehiculoController extends Controller
 
             $vehiculo->update($request->all());
             $vehiculo->save();
-            return response()->json(["Mensaje"=>"Modificado correctamente.","estado"=>true,"data"=>$vehiculo],200);
+            $cliente = Cliente::find($request->clienteID);
+          
+         
+            $dato[0] = json_decode(json_encode($vehiculo),true);
+            $dato[0]["cliente"] = $cliente->nombre;
+            return response()->json(["Mensaje"=>"Modificado correctamente.","estado"=>true,"data"=>$dato[0]],200);
         }
     }
 

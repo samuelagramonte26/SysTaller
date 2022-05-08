@@ -48,3 +48,10 @@ export  const handleFormCliente = (clienteDatos) => {
   
     return form;
   }
+  export  const handleFormProducto = (productoDatos) => {
+    let form = new FormData();
+    form.append('producto', productoDatos.producto);
+    form.append('montoInicial', productoDatos.montoInicial);
+    form.append('categoriaID', productoDatos.categoriaID); 
+    return form;
+  }
