@@ -9,6 +9,15 @@ export const GetData = async(set,seccion) => {
   
   
   }
+  export const GetDataID = async(set,seccion,id) => {
+   
+    await Axios.get(Uris(seccion,id).getID)
+  
+      .then(data => {set(data.data)})
+      .catch(e => console.log(e))
+  
+  
+  }
   export const DeleteData = async (id, handResult,seccion) => {
     await Axios.delete(Uris(seccion,id).delete)
         .then(data => handResult(data))

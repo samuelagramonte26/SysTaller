@@ -23,14 +23,21 @@ export const FacturaPrint = () => {
 
             <section className="invoice">
 
-                <div className="row">
+            <div className="row">
                     <div className="col-12">
+                        <h2 className="page-header">
+                            <i className="fas fa-globe"></i>Factura<br />
+                          
+                        </h2>
+                    </div>
+                </div>
+                <div className="row ">
+                        <div className="col-sm-4 invoice-col">
                         <h2 className="page-header">
                             <i className="fas fa-globe"></i>{factura && factura[0].nombre}<br />
                             <small className="float-right">Fecha:{factura && factura[0].fecha}</small>
                         </h2>
                     </div>
-
                 </div>
                 <div className='titulo'>
                     <div className="row invoice-info">

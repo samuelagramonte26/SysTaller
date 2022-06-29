@@ -19,6 +19,7 @@ class CreateMecanicosTable extends Migration
             $table->string("apellido");
             $table->date("fechaNacimiento");
             $table->string("cedula");
+            $table->boolean("estado")->default(false);
             $table->boolean("active")->default(true);
             $table->date("fechaCreado")->nullable();
             $table->date("fechaEditado")->nullable();

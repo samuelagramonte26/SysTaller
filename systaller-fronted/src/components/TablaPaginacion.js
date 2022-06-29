@@ -1,14 +1,14 @@
 import * as React from 'react';
 
 import TablePagination from '@mui/material/TablePagination';
-import { Link } from 'react-router-dom';
-import {PostFactura} from './provider/FacturasApi'
+import { Link, useNavigate } from 'react-router-dom';
+import { PostFactura } from './provider/FacturasApi'
 
-export default function TablaPaginacion({ columns, data, reparacion, facturacion, disable,facturar,eliminar,handleEdit }) {
+export default function TablaPaginacion({ columns, data, reparacion, facturacion, disable, facturar, eliminar, handleEdit, asignar }) {
 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
+const navegador = useNavigate();
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -76,7 +76,16 @@ export default function TablaPaginacion({ columns, data, reparacion, facturacion
                       ) : ''
                     }{" "}
                     {
-                      facturar && <button className="btn btn-success" onClick={()=>PostFactura(row.id)}  >Facturar</button>
+                      facturar && <button className="btn btn-success" onClick={() =>{
+                         PostFactura(row.id);
+                        navegador('/facturacion')
+                        } } >Facturar</button>
+                    }{" "}
+                    {
+                      asignar && <button className="btn btn-info" onClick={() => asignar(row.id)}  >
+                        <i className="bi bi-pencil-square"></i>
+                        Asignar mecanico
+                      </button>
                     }
                   </td>
                 </tr>

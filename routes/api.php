@@ -91,8 +91,11 @@ Route::post('producto/add','App\Http\Controllers\ProductoController@store');
 Route::post('producto/edit/{id}','App\Http\Controllers\ProductoController@update');
 Route::delete('producto/delete/{id}','App\Http\Controllers\ProductoController@destroy');
 
-//Reparacion
+//Reparacion  
 Route::get('reparacion','App\Http\Controllers\ReparacionController@index');
+Route::get('reparacionChequeo','App\Http\Controllers\ReparacionController@showChequeo');
+Route::get('reparacionMecanicos','App\Http\Controllers\ReparacionController@showMecanicos');
+Route::get('vehiculoCliente/{id}','App\Http\Controllers\ReparacionController@showVehiculoCliente');
 Route::get('reparacionTerminadas','App\Http\Controllers\ReparacionController@terminadas');
 Route::get('reparacion/{id}','App\Http\Controllers\ReparacionController@show');
 Route::post('reparacion/add','App\Http\Controllers\ReparacionController@store');

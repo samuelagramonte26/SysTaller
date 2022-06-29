@@ -55,3 +55,26 @@ export  const handleFormCliente = (clienteDatos) => {
     form.append('categoriaID', productoDatos.categoriaID); 
     return form;
   }
+  export  const handleFormReparacion = (reparacionDatos) => {
+    let form = new FormData();
+    form.append('clienteID', reparacionDatos.clienteID);
+    form.append('vehiculoID', reparacionDatos.vehiculoID);
+    form.append('comentario', reparacionDatos.comentario); 
+    form.append('fechaEntrada', reparacionDatos.fechaEntrada); 
+    return form;
+  }
+
+  export const handleFormMecanicoReparacion = (asignanionDatos)=>{
+    let form = new FormData();
+    form.append('reparacionID',asignanionDatos.reparacionID);
+    form.append('mecanicoID',asignanionDatos.mecanicoID);
+    return form;
+  }
+  export const handleFormDetalleProductos = (detalleProductos)=>{
+    let form = new FormData();
+    form.append('productoID',detalleProductos.productoID);
+    form.append('cantidad',detalleProductos.cantidad);
+    form.append('reparacionID',detalleProductos.reparacionID);
+    form.append('precio',detalleProductos.precio);
+    return form;
+  }
